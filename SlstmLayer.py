@@ -9,7 +9,10 @@ from tensorflow.python.framework import ops
 @ops.RegisterGradient("ST_OneHot")
 def _ST_OneHot(op, grad):
 	op.inputs[0].ST_grad = grad
-	return [tf.zeros(tf.shape(op.inputs[0]), dtype=tf.int64), 0, 0, 0]
+	return [tf.zeros(tf.shape(op.inputs[0]), dtype=tf.int64), 
+			tf.zeros([1], dtype=tf.int64), 
+			tf.zeros([1], dtype=tf.int64), 
+			tf.zeros([1], dtype=tf.int64)]
 
 @ops.RegisterGradient("ST_Multinomial")
 def _ST_Multinomial(op, _):
