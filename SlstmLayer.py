@@ -36,9 +36,9 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 		seq_length = incoming[0].seq_length
 		
 		cell = BasicLSTMCell(output_dim[0], reuse = True)
-		call_cell = lambda inputs, status: cell(scope = tf.variable_scope(scope, default_name="cell"))[1]
+		call_cell = lambda inputs, status: cell(scope = tf.variable_scope("cell"))[1]
 		cell_p = BasicLSTMCell(output_dim[1], reuse = True)
-		call_cell_p = lambda inputs, status: cell(scope = tf.variable_scope(scope, default_name="cell_p"))[1]
+		call_cell_p = lambda inputs, status: cell(scope = tf.variable_scope("cell_p"))[1]
 		
 		x_seq = tf.unstack(incoming[0], axis = 1)
 		x_p_seq = tf.unstack(incoming[1], axis = 1)
@@ -128,7 +128,7 @@ class separate_policy():
 		self.keepdrop = keepdrop
 		
 	def __call__(self, h, r, scope = None, name = 'separatePolicy'):
-		with tf.variable_scope(scope, default_name=name, values=[h, r]) as scope:
+		with tf.variable_scope(scope=scope, default_name=name, values=[h, r]) as scope:
 			name = scope.name
 			
 			incoming = tf.concat([h, r], axis = 2)
@@ -140,10 +140,10 @@ class separate_policy():
 			inference = tf.reshape(incoming, [batch_num * choose_num, feature_num])
 			
 			for d in self.dim:
-				with tf.variable_scope(scope, default_name = "W" + str(d)) as scope:
+				with tf.variable_scope("W" + str(d)) as scope:
 					inference = tflearn.fully_connected(inference, d, activation = self.activation, reuse = self.reuse, scope = scope)
 					inference = tflearn.dropout(inference, self.keepdrop)
-			with tf.variable_scope(scope, default_name = "Wend") as scope:
+			with tf.variable_scope("W1") as scope:
 				inference = tflearn.fully_connected(inference, 1, reuse = self.reuse, scope = scope)
 			
 			inference = tf.reshape(reference, [batch_num, -1])
