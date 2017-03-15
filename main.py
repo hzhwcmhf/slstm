@@ -55,7 +55,7 @@ def run(args):
 	# Training
 	model = tflearn.DNN(net, tensorboard_verbose=0)
 	model.fit(devX, devY, validation_set=(devX, devY), show_metric=True,
-          batch_size=32)
+		  batch_size=32)
 		  
 	# regularize 
 	# normalization

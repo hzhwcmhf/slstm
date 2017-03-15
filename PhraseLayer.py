@@ -54,11 +54,11 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				
 		
 		if isinstance(activation, str):
-            activation = activations.get(activation)
-        elif hasattr(activation, '__call__'):
-            activation = activation
-        else:
-            raise ValueError("Invalid Activation.")
+			activation = activations.get(activation)
+		elif hasattr(activation, '__call__'):
+			activation = activation
+		else:
+			raise ValueError("Invalid Activation.")
 		
 		
 		def calc(incoming, P, Q, R, O, output_dim):
