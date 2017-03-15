@@ -58,8 +58,8 @@ class WordLoader(object):
 		
 		for words, index in words.items():
 			word_list = eval(words)
-			if word_list in dic:
-				value[index] = list(dic[word_list])
+			if word_list[0] in dic:
+				value[index] = list(dic[word_list[0]])
 			else:
 				not_found += 1
 			
