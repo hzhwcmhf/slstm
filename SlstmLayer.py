@@ -42,7 +42,7 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 				cell.reuse = True
 				return ans
 				
-		cell_p = BasicLSTMCell(output_dim[1], reuse = True)
+		cell_p = BasicLSTMCell(output_dim[1], reuse = False)
 		def call_cell_p(inputs, status):
 			with tf.variable_scope("cell_p") as scope:
 				ans = cell_p(inputs, status, scope = scope)[1]
