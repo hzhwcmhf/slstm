@@ -3,6 +3,7 @@
 import tensorflow as tf
 import tflearn
 from tflearn import variables as va
+from tflearn import initializations
 
 def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='linear', 
 		dropout_keepprob = 0.5, batchNorm = False, name = 'PhraseLayer', alpha = 0.5, scope = None):
