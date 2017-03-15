@@ -1,6 +1,6 @@
 # coding:utf-8
 
-from run import run 
+from main import run 
 
 class arguement():pass
 
