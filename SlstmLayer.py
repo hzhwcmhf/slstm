@@ -93,9 +93,11 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 			all_h_p = []
 			all_c_p = []
 			for h, c, h_p, c_p, r, r_p in zip(h_pre, c_pre, h_p_pre, c_p_pre, x_seq, x_p_seq):
+				print "call_cell"
 				state = call_cell(r, (c, h))
 				all_c.append(state[0])
 				all_h.append(state[1])
+				print "call_cell_p"
 				state_p = call_cell_p(tf.concat([tf.stop_gradient(r), r_p], axis = 1), (c_p, h_p))
 				all_c_p.append(state_p[0])
 				all_h_p.append(state_p[1])
