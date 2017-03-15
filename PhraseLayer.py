@@ -41,11 +41,11 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				initializer=initializations.get('truncated_normal')())
 		tf.add_to_collection(tf.GraphKeys.LAYER_VARIABLES + '/' + name, R_p)
 		
-		O = va.variable('O', shape=[input_dim, output_dim[0]],
+		O = va.variable('O', shape=[output_dim[0], output_dim[0]],
 				initializer=initializations.get('truncated_normal')())
 		tf.add_to_collection(tf.GraphKeys.LAYER_VARIABLES + '/' + name, O)
 		
-		O_p = va.variable('O_p', shape=[input_dim, output_dim[1]],
+		O_p = va.variable('O_p', shape=[output_dim[1], output_dim[1]],
 				initializer=initializations.get('truncated_normal')())
 		tf.add_to_collection(tf.GraphKeys.LAYER_VARIABLES + '/' + name, O_p)
 		
