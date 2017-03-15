@@ -53,7 +53,7 @@ class WordLoader(object):
 		logging.info('loading word vectors...')
 		dic = self.load_word_vector(fname)
 
-		value = np.array((num + 1, dim_r), dtype=tf.float32)
+		value = np.zeros([num + 1, dim_r], dtype=tf.float32)
 		not_found = 0
 		
 		for words, index in words.items():
