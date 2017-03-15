@@ -10,7 +10,7 @@ from tflearn.data_utils import to_categorical, pad_sequences
 from WordLoader import WordLoader
 from PhraseLayer import PhraseLayer
 from DataManager import DataManager
-from SlstmLayer import SlstmLayer
+from SlstmLayer import SlstmLayer, seperate_policy
 from ClassifyLayer import ClassifyLayer
 
 def run(args):
