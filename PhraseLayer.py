@@ -69,9 +69,9 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 			batch_size = tf.shape(incoming)[0]
 			sent_length = tf.shape(incoming)[1]
 			
-			G1 = tf.zeros([batch_size, sent_length, output_dim[0]])
-			G2 = tf.zeros([batch_size, sent_length, output_dim[0]])
-			G3 = tf.zeros([batch_size, sent_length, output_dim[0]])
+			G1 = tf.zeros([batch_size, sent_length, output_dim])
+			G2 = tf.zeros([batch_size, sent_length, output_dim])
+			G3 = tf.zeros([batch_size, sent_length, output_dim])
 			r = []
 			
 			now = incoming
