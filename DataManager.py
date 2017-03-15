@@ -76,6 +76,6 @@ class DataManager(object):
 	
 	def padding_zero(self, data, length = 100):
 		res = np.zeros([len(data), length])
-		for i in data:
-			res[i,0:min(length, len(i))] = data[i]
+		for i in len(data):
+			res[i,0:min(length, len(data[i]))] = data[i]
 		return res

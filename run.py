@@ -10,7 +10,7 @@ args.name = "test"
 args.screen = 1
 args.dataset = "sst"
 args.sentence_length = 100
-args.cache = 0
+args.cache = 1
 
 args.dim_w = 300
 
