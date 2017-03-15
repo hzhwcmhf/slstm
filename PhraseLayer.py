@@ -79,7 +79,7 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				if i == 0:
 					now = incoming
 				else:
-					now = tf.concat([tf.zeros([batch_size, i, input_dim]), now[:,0:-i, :]], axis = 1)
+					now = tf.concat([tf.zeros([batch_size, i, input_dim]), incoming[:,0:-i, :]], axis = 1)
 				
 				now = tf.reshape(incoming, [batch_size * sent_length, input_dim])
 				
