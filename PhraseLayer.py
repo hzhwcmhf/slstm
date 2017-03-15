@@ -69,16 +69,21 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 			batch_size = tf.shape(incoming)[0]
 			sent_length = tf.shape(incoming)[1]
 			
-			G1 = tf.zeros([batch_size, sent_length, output_dim])
-			G2 = tf.zeros([batch_size, sent_length, output_dim])
-			G3 = tf.zeros([batch_size, sent_length, output_dim])
+			G1 = tf.zeros([batch_size * sent_length, output_dim])
+			G2 = tf.zeros([batch_size * sent_length, output_dim])
+			G3 = tf.zeros([batch_size * sent_length, output_dim])
 			r = []
 			
-			now = incoming
-			
 			for i in range(output_length):
-			
-				F1 = tf.matmul(now, P) if i == 0 else tf.zeros([batch_size, sent_length, output_dim])
+				
+				if i == 0:
+					now = incoming
+				else:
+					now = tf.concat([tf.zeros([batch_size, i, input_dim]), now[:,0:-i, :]], axis = 1)
+				
+				now = tf.reshape(incoming, [batch_size * sent_length, output_dim])
+				
+				F1 = tf.matmul(now, P) if i == 0 else tf.zeros([batch_size * sent_length, output_dim])
 				F2 = tf.matmul(now, Q) * G1
 				F3 = tf.matmul(now, R) * G2
 				
@@ -88,9 +93,7 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				
 				r.append(tf.matmul(G1+G2+G3, O))
 				
-				now = tf.concat(1, [tf.zeros([batch_size, 1, input_dim]), now[:,0:-1, :]])
-		
-			return tf.pack(2, r)
+			return tf.reshape(tf.stack(r, axis = 1), [batch_size, sent_length, output_length, output_dim])
 		
 		out1 = calc(incoming, P, Q, R, O, output_dim[0]) + b
 		out2 = calc(tf.stop_gradient(incoming), P_p, Q_p, R_p, O_p, output_dim[1]) + b_p
