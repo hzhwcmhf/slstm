@@ -40,7 +40,7 @@ def run(args):
 	
 	wordLoader = WordLoader()
 	wordvec = wordLoader.genWordVec(args.word_vector, dm.words, args.dim_w)
-	embedding = tflearn.embedding(input, input_dim=len(dm.words), output_dim = args.dim_w, weights_init = tf.constant_initializer(wordvec))
+	embedding = tflearn.embedding(input, input_dim=len(dm.words) + 1, output_dim = args.dim_w, weights_init = tf.constant_initializer(wordvec))
 	
 	phrase = PhraseLayer(embedding, input_dim = args.dim_w, output_dim = (args.dim_r, args.dim_rp), output_length = args.choose_num, activation = 'prelu', dropout_keepprob = args.keep_drop, batchNorm = True)
 	
