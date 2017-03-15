@@ -65,6 +65,7 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 			
 			action_continous_seq.append(action)
 			
+			g = tf.get_default_graph()
 			with ops.name_scope("MultinomialSample") as name:
 				with g.gradient_override_map({"OneHot": "ST_OneHot", "Multinomial": "ST_Multinomial"}):
 					action = tf.one_hot(tf.multinomial(action, 1), choose_length, on_value = 1, 
