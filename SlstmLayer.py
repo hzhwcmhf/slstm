@@ -140,10 +140,11 @@ class separate_policy():
 			inference = tf.reshape(incoming, [batch_num * choose_num, feature_num])
 			
 			for d in self.dim:
-				inference = tflearn.fully_connected(inference, d, activation = self.activation, reuse = self.reuse, scope = scope, name = "W" + str(d))
-				inference = tflearn.dropout(inference, self.keepdrop)
-			inference = tflearn.fully_connected(inference, 1, reuse = self.reuse, scope = scope, 
-				name = "W1")
+				with tf.variable_scope(scope, default_name = "W" + str(d)) as scope:
+					inference = tflearn.fully_connected(inference, d, activation = self.activation, reuse = self.reuse, scope = scope)
+					inference = tflearn.dropout(inference, self.keepdrop)
+			with tf.variable_scope(scope, default_name = "W1") as scope:
+				inference = tflearn.fully_connected(inference, 1, reuse = self.reuse, scope = scope)
 			
 			inference = tf.reshape(reference, [batch_num, -1])
 			inference = tf.softmax(reference)
