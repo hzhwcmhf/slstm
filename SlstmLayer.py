@@ -123,7 +123,8 @@ class separate_policy():
 	def __init__(self, dim, activation='prelu', keepdrop = 0.8, reuse = False):
 		self.dim = dim
 		self.activation = activation
-		self.reuse = reuse
+		self.second_reuse = reuse
+		self.reuse = False
 		self.keepdrop = keepdrop
 		
 	def __call__(self, h, r, scope = None, name = 'separatePolicy'):
@@ -145,5 +146,6 @@ class separate_policy():
 			
 			inference = tf.reshape(reference, [batch_num, -1])
 			inference = tf.softmax(reference)
-			
+		
+		self.reuse = self.second_reuse
 		return inference
