@@ -66,8 +66,8 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 		
 		def calc(incoming, P, Q, R, O, output_dim):
 		
-			batch_size = incoming.get_shape[0].value
-			sent_length = incoming.get_shape[1].value
+			batch_size = incoming.shape[0].value
+			sent_length = incoming.shape[1].value
 			
 			G1 = tf.zeros([batch_size * sent_length, output_dim])
 			G2 = tf.zeros([batch_size * sent_length, output_dim])
