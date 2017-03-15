@@ -147,7 +147,7 @@ class separate_policy():
 				inference = tflearn.fully_connected(inference, 1, reuse = self.reuse, scope = scope)
 			
 			inference = tf.reshape(inference, [batch_num, choose_num])
-			inference = tf.softmax(inference)
+			inference = tf.nn.softmax(inference)
 		
 		self.reuse = self.second_reuse
 		return inference
