@@ -44,7 +44,7 @@ class DataManager(object):
 			index = 0
 			for rating, sent in self.origin_data[key]:
 				# print single
-				result = [self.words[repr(x)] for x in sent]
+				result = [self.words[repr([x])] for x in sent]
 					
 				data.append(np.array(result))
 				rat = np.zeros((self.grained), dtype = theano.config.floatX)
