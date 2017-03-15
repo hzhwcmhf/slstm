@@ -130,7 +130,7 @@ class separate_policy():
 		with tf.variable_scope(scope, default_name=name, values=[h, r]) as scope:
 			name = scope.name
 			
-			batch_num = h.get_shape()[0].value
+			batch_num = tf.shape(h)[0]
 			choose_num = h.get_shape()[1].value
 			
 			incoming = tf.concat([h, r], axis = 2)
