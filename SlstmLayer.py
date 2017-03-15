@@ -128,7 +128,7 @@ class separate_policy():
 		self.keepdrop = keepdrop
 		
 	def __call__(self, h, r, scope = None, name = 'separatePolicy'):
-		with tf.variable_scope(scope=scope, default_name=name, values=[h, r]) as scope:
+		with tf.variable_scope(scope, default_name=name, values=[h, r]) as scope:
 			name = scope.name
 			
 			incoming = tf.concat([h, r], axis = 2)
