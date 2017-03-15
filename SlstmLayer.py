@@ -89,13 +89,13 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 				all_h_p.append(state_p[1])
 			
 			now_h = tf.reduce_sum(tf.pack(all_h, axis = 1) * action, axis = 1)
-			now_h = tf.where(tf.less(time, incoming[0].seq_length), now_h, tf.zeros([batch_num, output_dim[0]))
+			now_h = tf.where(tf.less(time, incoming[0].seq_length), now_h, tf.zeros([batch_num, output_dim[0]]))
 			now_c = tf.reduce_sum(tf.pack(all_c, axis = 1) * action, axis = 1)
-			now_c = tf.where(tf.less(time, incoming[0].seq_length), now_c, tf.zeros([batch_num, output_dim[0]))
+			now_c = tf.where(tf.less(time, incoming[0].seq_length), now_c, tf.zeros([batch_num, output_dim[0]]))
 			now_h_p = tf.reduce_sum(tf.pack(all_h_p, axis = 1) * action, axis = 1)
-			now_h_p = tf.where(tf.less(time, incoming[0].seq_length), now_h_p, tf.zeros([batch_num, output_dim[1]))
+			now_h_p = tf.where(tf.less(time, incoming[0].seq_length), now_h_p, tf.zeros([batch_num, output_dim[1]]))
 			now_c_p = tf.reduce_sum(tf.pack(all_c_p, axis = 1) * action, axis = 1)
-			now_c_p = tf.where(tf.less(time, incoming[0].seq_length), now_c_p, tf.zeros([batch_num, output_dim[1]))
+			now_c_p = tf.where(tf.less(time, incoming[0].seq_length), now_c_p, tf.zeros([batch_num, output_dim[1]]))
 			
 			h_seq.append(now_h)
 			c_seq.append(now_c)
