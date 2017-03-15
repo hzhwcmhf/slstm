@@ -120,7 +120,7 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 		else:
 			output_h = h_seq[-1]
 		
-		output_h = tf.dropout(output_h, dropout_keepprop, name="dropOut")
+		output_h = tflearn.dropout(output_h, dropout_keepprop, name="dropOut")
 		output_action = tf.stack(action_seq, axis = 1)
 		action_continous = tf.stack(action_continous_seq, axis = 1)
 		
