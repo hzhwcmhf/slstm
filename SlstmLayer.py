@@ -119,7 +119,7 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 	
 	return output_h, output_action
 	
-class seperate_policy():
+class separate_policy():
 	def __init__(self, dim, activation='prelu', keepdrop = 0.8, reuse = False):
 		self.dim = dim
 		self.activation = activation
