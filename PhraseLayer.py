@@ -105,11 +105,11 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 		tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, out2)
 		
 		if batchNorm:
-			out1 = tf.batch_normalization(out1, name="batchNormOut1")
-			out2 = tf.batch_normalization(out2, name="batchNormOut2")
+			out1 = tflearn.batch_normalization(out1, name="batchNormOut1")
+			out2 = tflearn.batch_normalization(out2, name="batchNormOut2")
 		
-		out1 = tf.dropout(out1, dropout_keepprop, name="dropOut1")
-		out2 = tf.dropout(out2, dropout_keepprop, name="dropOut2")
+		out1 = tflearn.dropout(out1, dropout_keepprop, name="dropOut1")
+		out2 = tflearn.dropout(out2, dropout_keepprop, name="dropOut2")
 	
 	out1.seq_length = incoming.seq_length
 	out2.seq_length = incoming.seq_length
