@@ -16,7 +16,7 @@ def _ST_OneHot(op, grad):
 
 @ops.RegisterGradient("ST_Multinomial")
 def _ST_Multinomial(op, _):
-	return [op.outputs[0].ST_grad, 0]
+	return [op.outputs[0].ST_grad, tf.zeros([], dtype=tf.int32)]
 
 def SlstmLayer(incoming, input_dim, output_dim, policy,
 		dropout_keepprob = 0.5, pooling = False, update = "straight", scope = None, name = "SlstmLayer"):
