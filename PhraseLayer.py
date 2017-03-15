@@ -5,7 +5,7 @@ import tflearn
 from tflearn import variables as va
 
 def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='linear', 
-		dropout_keepprop = 0.5, batchNorm = False, name = 'PhraseLayer', alpha = 0.5, scope = None):
+		dropout_keepprob = 0.5, batchNorm = False, name = 'PhraseLayer', alpha = 0.5, scope = None):
 	'''
 	incoming: [batch_size, sen_length, input_dim]
 	
