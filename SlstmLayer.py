@@ -1,5 +1,6 @@
 # coding:utf-8
 
+import tensorflow as tf
 import tflearn
 from tflearn import variables as va
 from tflearn.layers.recurrent import BasicLSTMCell

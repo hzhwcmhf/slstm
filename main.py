@@ -3,7 +3,7 @@
 import logging
 import pickle
 
-
+import tensorflow as tf
 import tflearn
 from tflearn.data_utils import to_categorical, pad_sequences
 
