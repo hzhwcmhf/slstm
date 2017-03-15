@@ -130,12 +130,13 @@ class separate_policy():
 		with tf.variable_scope(scope, default_name=name, values=[h, r]) as scope:
 			name = scope.name
 			
-			batch_num = tf.shape(h)[0]
-			choose_num = h.get_shape()[1].value
-			
 			incoming = tf.concat([h, r], axis = 2)
 			
-			inference = tf.reshape(incoming, [batch_num * choose_num, -1])
+			batch_num = tf.shape(incoming)[0]
+			choose_num = incoming.get_shape()[1].value
+			feature_num = incoming.get_shape()[2].value
+			
+			inference = tf.reshape(incoming, [batch_num * choose_num, feature_num])
 			
 			for d in self.dim:
 				inference = tflearn.fully_connected(inference, d, activation = self.activation, reuse = self.reuse, scope = scope)
