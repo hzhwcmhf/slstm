@@ -11,8 +11,8 @@ def _ST_OneHot(op, grad):
 	op.inputs[0].ST_grad = grad
 	return [tf.zeros(tf.shape(op.inputs[0]), dtype=tf.int64), 
 			tf.zeros([1], dtype=tf.int32), 
-			tf.zeros([1], dtype=tf.int32), 
-			tf.zeros([1], dtype=tf.int32)]
+			tf.zeros([1], dtype=tf.float32), 
+			tf.zeros([1], dtype=tf.float32)]
 
 @ops.RegisterGradient("ST_Multinomial")
 def _ST_Multinomial(op, _):
