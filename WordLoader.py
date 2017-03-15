@@ -1,3 +1,7 @@
+import tensorflow as tf
+import tflearn
+import logging
+
 import numpy as np
 from numpy import dtype, fromstring, float32 as REAL
 
@@ -39,3 +43,27 @@ class WordLoader(object):
                     except:
                         pass
         return vocab
+
+	def genWordVec(self, words, dim_r):
+		num = len(words)
+		logging.info('vocabulary size: %s' % num)
+		
+		fname = 'dataset/' + word_vector
+		
+		logging.info('loading word vectors...')
+		dic = self.load_word_vector(fname)
+
+		value = np.array((num + 1, dim_r), dtype=tf.float32)
+		not_found = 0
+		
+		for words, index in words.items():
+			word_list = eval(words)
+			if word_list in dict:
+				value[index] = list(dic[word_list[0]])
+			else:
+				not_found += 1
+			
+		logging.info('word vector for %s, %d not found.' % (key, not_found))
+		logging.info('loading word vectors ok...')
+		
+		return value

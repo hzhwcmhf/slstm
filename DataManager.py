@@ -28,8 +28,8 @@ class DataManager(object):
 			for label, sent in self.origin_data[key]:
 				for word in sent:
 					if repr([word]) not in words.keys():
-						id = len(words)
-						words[repr([word])] = id
+						id = len(words) + 1
+						words[repr([word])] = id + 1
 		self.words = words
 		return self.words
 	
@@ -52,6 +52,8 @@ class DataManager(object):
 				label.append(rat)
 				index = index + 1
 			self.data[key] = (label, data)
+			
+
 		
 		self.data['train_small'] = self.data['train'][0][::10], self.data['train'][1][::10], 
 		
@@ -59,7 +61,7 @@ class DataManager(object):
 		self.index_now = 0
 		return self.data
 
-	def get_mini_batch(self, mini_batch_size=25):
+	def get_mini_batch(self, mini_batch_size=25, length = 100):
 		if self.index_now >= len(self.index):
 			random.shuffle(self.index)
 			self.index_now = 0
@@ -67,4 +69,13 @@ class DataManager(object):
 		label = np.take(self.data['train'][0], self.index[st:ed], 0)
 		data = np.take(self.data['train'][1], self.index[st:ed], 0)
 		self.index_now += mini_batch_size
-		return label, data
+		return label, padding_zero(data, length)
+	
+	def gen_batch(self, key, length = 100):
+		return self.data[key][0], self.padding_zero(self.data[key][1], length)
+	
+	def padding_zero(self, data, length = 100):
+		res = np.zeros(len(data), length)
+		for i in data:
+			res[i,0:min(length, len(i))] = data[i]
+		return res
