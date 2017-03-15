@@ -36,15 +36,15 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 		seq_length = incoming[0].seq_length
 		
 		cell = BasicLSTMCell(output_dim[0], reuse = False)
-		with tf.variable_scope("cell") as scope:
-			def call_cell(inputs, status):
+		def call_cell(inputs, status):
+			with tf.variable_scope("cell") as scope:
 				ans = cell(inputs, status, scope = scope)[1]
 				cell.reuse = True
 				return ans
 				
 		cell_p = BasicLSTMCell(output_dim[1], reuse = True)
-		with tf.variable_scope("cell_p") as scope:
-			def call_cell_p(inputs, status):
+		def call_cell_p(inputs, status):
+			with tf.variable_scope("cell_p") as scope:
 				ans = cell_p(inputs, status, scope = scope)[1]
 				cell_p.reuse = True
 				return ans
