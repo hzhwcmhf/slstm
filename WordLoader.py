@@ -44,7 +44,7 @@ class WordLoader(object):
 						pass
 		return vocab
 
-	def genWordVec(self, words, dim_r):
+	def genWordVec(self, word_vector, words, dim_r):
 		num = len(words)
 		logging.info('vocabulary size: %s' % num)
 		

@@ -11,6 +11,7 @@ args.screen = 1
 args.dataset = "sst"
 args.sentence_length = 100
 args.cache = 1
+args.word_vector = 'wordvector/glove.refine.txt'
 
 args.dim_w = 300
 
