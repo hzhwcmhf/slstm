@@ -19,6 +19,8 @@ args.dim_r = 250
 args.dim_rp = 50
 args.choose_num = 3
 
+args.dim_h = 250
+args.dim_hp = 50
 args.policy_dim = [64]
 
 args.dim_c1 = [64, 5]
