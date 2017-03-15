@@ -81,7 +81,7 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				else:
 					now = tf.concat([tf.zeros([batch_size, i, input_dim]), now[:,0:-i, :]], axis = 1)
 				
-				now = tf.reshape(incoming, [batch_size * sent_length, output_dim])
+				now = tf.reshape(incoming, [batch_size * sent_length, input_dim])
 				
 				F1 = tf.matmul(now, P) if i == 0 else tf.zeros([batch_size * sent_length, output_dim])
 				F2 = tf.matmul(now, Q) * G1
