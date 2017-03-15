@@ -143,7 +143,7 @@ class separate_policy():
 				with tf.variable_scope(scope, default_name = "W" + str(d)) as scope:
 					inference = tflearn.fully_connected(inference, d, activation = self.activation, reuse = self.reuse, scope = scope)
 					inference = tflearn.dropout(inference, self.keepdrop)
-			with tf.variable_scope(scope, default_name = "W1") as scope:
+			with tf.variable_scope(scope, default_name = "Wend") as scope:
 				inference = tflearn.fully_connected(inference, 1, reuse = self.reuse, scope = scope)
 			
 			inference = tf.reshape(reference, [batch_num, -1])
