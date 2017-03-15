@@ -37,10 +37,10 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 		
 		cell = BasicLSTMCell(output_dim[0], reuse = True)
 		with tf.variable_scope("cell") as scope:
-			call_cell = lambda inputs, status: cell(input, status, scope = scope)[1]
+			call_cell = lambda inputs, status: cell(inputs, status, scope = scope)[1]
 		cell_p = BasicLSTMCell(output_dim[1], reuse = True)
 		with tf.variable_scope("cell_p") as scope:
-			call_cell_p = lambda inputs, status: cell(input, status, scope = scope)[1]
+			call_cell_p = lambda inputs, status: cell(inputs, status, scope = scope)[1]
 		
 		x_seq = tf.unstack(incoming[0], axis = 1)
 		x_p_seq = tf.unstack(incoming[1], axis = 1)
