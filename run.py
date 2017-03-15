@@ -23,7 +23,7 @@ args.dim_h = 250
 args.dim_hp = 50
 args.policy_dim = [64]
 
-args.dim_c1 = [64, 5]
+args.dim_c = [64, 5]
 
 args.keep_drop = 0.7
 
