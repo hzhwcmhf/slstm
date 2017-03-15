@@ -2,7 +2,7 @@
 
 import tflearn
 from tflearn import variables as va
-from tflearn import BasicLSTMCell
+from tflearn.layers.recurrent import BasicLSTMCell
 
 @ops.RegisterGradient("ST_OneHot")
 def _ST_OneHot(op, grad):
