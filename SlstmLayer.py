@@ -53,10 +53,10 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 		action_seq = []
 		
 		for time, (x, x_p) in enumerate(zip(x_seq, x_p_seq)):
-			h_pre = tf.pack(h_seq[:-choose_length-1:-1], axis = 1)
+			h_pre = tf.stack(h_seq[:-choose_length-1:-1], axis = 1)
 			h_pre_s = tf.stop_gradient(h_pre)
 			
-			h_p_pre = tf.pack(h_p_seq[:-choose_length-1:-1], axis = 1)
+			h_p_pre = tf.stack(h_p_seq[:-choose_length-1:-1], axis = 1)
 			
 			x_s = tf.stop_gradient(x)
 			
@@ -90,13 +90,13 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 				all_c_p.append(state_p[0])
 				all_h_p.append(state_p[1])
 			
-			now_h = tf.reduce_sum(tf.pack(all_h, axis = 1) * action, axis = 1)
+			now_h = tf.reduce_sum(tf.stack(all_h, axis = 1) * action, axis = 1)
 			now_h = tf.where(tf.less(time, incoming[0].seq_length), now_h, tf.zeros([batch_num, output_dim[0]]))
-			now_c = tf.reduce_sum(tf.pack(all_c, axis = 1) * action, axis = 1)
+			now_c = tf.reduce_sum(tf.stack(all_c, axis = 1) * action, axis = 1)
 			now_c = tf.where(tf.less(time, incoming[0].seq_length), now_c, tf.zeros([batch_num, output_dim[0]]))
-			now_h_p = tf.reduce_sum(tf.pack(all_h_p, axis = 1) * action, axis = 1)
+			now_h_p = tf.reduce_sum(tf.stack(all_h_p, axis = 1) * action, axis = 1)
 			now_h_p = tf.where(tf.less(time, incoming[0].seq_length), now_h_p, tf.zeros([batch_num, output_dim[1]]))
-			now_c_p = tf.reduce_sum(tf.pack(all_c_p, axis = 1) * action, axis = 1)
+			now_c_p = tf.reduce_sum(tf.stack(all_c_p, axis = 1) * action, axis = 1)
 			now_c_p = tf.where(tf.less(time, incoming[0].seq_length), now_c_p, tf.zeros([batch_num, output_dim[1]]))
 			
 			h_seq.append(now_h)
@@ -105,13 +105,13 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 			c_p_seq.append(now_c_p)
 			
 		if pooling:
-			output_h = tf.reduce_max(tf.pack(h_seq, axis = 2), axis = 2)
+			output_h = tf.reduce_max(tf.stack(h_seq, axis = 2), axis = 2)
 		else:
 			output_h = h_seq[-1]
 		
 		output_h = tf.dropout(output_h, dropout_keepprop, name="dropOut")
-		output_action = tf.pack(action_seq, axis = 1)
-		action_continous = tf.pack(action_continous_seq, axis = 1)
+		output_action = tf.stack(action_seq, axis = 1)
+		action_continous = tf.stack(action_continous_seq, axis = 1)
 		
 	tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, output_h)
 	tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, output_action)
