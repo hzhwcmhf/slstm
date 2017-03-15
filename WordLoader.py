@@ -63,7 +63,7 @@ class WordLoader(object):
 			else:
 				not_found += 1
 			
-		logging.info('word vector for %s, %d not found.' % (key, not_found))
+		logging.info('word vector %d not found.' % (not_found))
 		logging.info('loading word vectors ok...')
 		
 		return value
