@@ -2,7 +2,7 @@
 
 from main import run 
 
-class arguement():pass
+class argument():pass
 
 args = argument()
 
