@@ -96,9 +96,13 @@ def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 				state = call_cell(r, (c, h))
 				all_c.append(state[0])
 				all_h.append(state[1])
-				state_p = call_cell_p(tf.concat([tf.stop_gradient(r), r_p], axis = 1), (c_p, h_p))
-				all_c_p.append(state_p[0])
-				all_h_p.append(state_p[1])
+				if input_dim[1] == 0:
+					all_c_p.append(c_p_seq[-1])
+					all_h_p.append(h_p_seq[-1])
+				else:
+					state_p = call_cell_p(tf.concat([tf.stop_gradient(r), r_p], axis = 1), (c_p, h_p))
+					all_c_p.append(state_p[0])
+					all_h_p.append(state_p[1])
 			
 			action = tf.reshape(action, [batch_size, choose_length, 1])
 			now_h = tf.reduce_sum(tf.stack(all_h, axis = 1) * action, axis = 1)
