@@ -14,6 +14,10 @@ from SlstmLayer import SlstmLayer, separate_policy
 from ClassifyLayer import ClassifyLayer
 
 def run(args):
+	config = tf.ConfigProto()
+	config.gpu_options.allow_growth = True
+	tf.add_to_collection('graph_config', config)
+
 
 	logging.basicConfig(
 		filename = ('log/%s.log' % args.name) * (1-args.screen),
@@ -55,13 +59,7 @@ def run(args):
 			loss='categorical_crossentropy')
 						 
 	# Training
-	config = tf.ConfigProto()
-	config.gpu_options.allow_growth = True
-	sess = tf.Session(config=config)
-	sess.run(tf.global_variables_initializer())
-
-	
-	model = tflearn.DNN(net, tensorboard_verbose=3, session=sess)
+	model = tflearn.DNN(net, tensorboard_verbose=3)
 	model.fit({"input":trainX, "input_len":trainLength}, trainY, validation_set=({"input":devX, "input_len":devLength}, devY), show_metric=True,
 		  batch_size=32)
 		  
