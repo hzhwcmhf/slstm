@@ -28,6 +28,6 @@ args.dim_c = [64, 5]
 args.keep_drop = 0.7
 
 
-args.learning_rate = 0.001
+args.learning_rate = 0.01
 
 run(args)
