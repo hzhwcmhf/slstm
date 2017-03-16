@@ -30,13 +30,14 @@ def run(args):
 		pickle.dump(dm, open("./cache/data_dump", "wb"), -1)
 	else :
 		dm = pickle.load(open("./cache/data_dump", "rb"))
-	trainY, trainX = dm.gen_batch('train', length = args.sentence_length)
-	devY, devX = dm.gen_batch('dev', length = args.sentence_length)
-	testY, testX = dm.gen_batch('test', length = args.sentence_length)
+	trainY, trainX, trainLength = dm.gen_batch('train', length = args.sentence_length)
+	devY, devX, devLength = dm.gen_batch('dev', length = args.sentence_length)
+	testY, testX, testLength = dm.gen_batch('test', length = args.sentence_length)
 	
 	logging.info('----------input data ok------------')
 	
-	input = tflearn.input_data([None, args.sentence_length])
+	input = tflearn.input_data([None, args.sentence_length], name="input")
+	seq_length = tflearn.input_data([None], name="input_len")
 	
 	wordLoader = WordLoader()
 	wordvec = wordLoader.genWordVec(args.word_vector, dm.words, args.dim_w)
@@ -46,7 +47,7 @@ def run(args):
 	
 	policy = separate_policy(args.policy_dim, activation='prelu',keepdrop = args.keep_drop, reuse = True)
 	
-	hidden, action = SlstmLayer(phrase, input_dim = (args.dim_r, args.dim_rp), output_dim = (args.dim_h, args.dim_hp), policy = policy, dropout_keepprob = args.keep_drop, pooling = True, update = "straight")
+	hidden, action = SlstmLayer(phrase, seq_length, input_dim = (args.dim_r, args.dim_rp), output_dim = (args.dim_h, args.dim_hp), policy = policy, dropout_keepprob = args.keep_drop, pooling = True, update = "straight")
 	
 	predict_y = ClassifyLayer(hidden, dim = args.dim_c, keepdrop = args.keep_drop, activation='prelu')
 	
@@ -54,8 +55,8 @@ def run(args):
 			loss='categorical_crossentropy')
 						 
 	# Training
-	model = tflearn.DNN(net, tensorboard_verbose=0)
-	model.fit(devX, devY, validation_set=(devX, devY), show_metric=True,
+	model = tflearn.DNN(net, tensorboard_verbose=3)
+	model.fit({"input":trainX, "input_len":trainLength}, trainY, validation_set=({"input":devX, "input_len":devLength}, devY), show_metric=True,
 		  batch_size=32)
 		  
 	# regularize 

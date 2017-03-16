@@ -72,7 +72,7 @@ class DataManager(object):
 		return label, padding_zero(data, length)
 	
 	def gen_batch(self, key, length = 100):
-		return self.data[key][0], self.padding_zero(self.data[key][1], length)
+		return self.data[key][0], self.padding_zero(self.data[key][1], length), np.array([len(x) for x in self.data[key][1]])
 	
 	def padding_zero(self, data, length = 100):
 		res = np.zeros([len(data), length])

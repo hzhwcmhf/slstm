@@ -18,7 +18,7 @@ def _ST_OneHot(op, grad):
 def _ST_Multinomial(op, _):
 	return [tf.reshape(op.outputs[0].ST_grad, tf.shape(op.inputs[0])), tf.zeros([], dtype=tf.int32)]
 
-def SlstmLayer(incoming, input_dim, output_dim, policy,
+def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 		dropout_keepprob = 0.5, pooling = False, update = "straight", scope = None, name = "SlstmLayer"):
 	'''
 	incomming:
@@ -35,8 +35,6 @@ def SlstmLayer(incoming, input_dim, output_dim, policy,
 		batch_size = tf.shape(incoming[0])[0]
 		sen_length = incoming[0].get_shape()[1].value
 		choose_length = incoming[0].get_shape()[2].value
-		
-		seq_length = incoming[0].seq_length
 		
 		cell = BasicLSTMCell(output_dim[0], reuse = False)
 		def call_cell(inputs, status):
