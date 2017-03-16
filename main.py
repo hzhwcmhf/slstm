@@ -58,6 +58,8 @@ def run(args):
 	
 	predict_y = ClassifyLayer(hidden, dim = args.dim_c, keepdrop = args.keep_drop, activation='prelu')
 	
+	predict_y = tf.Print(predict_y, summarize = 10)
+	
 	net = tflearn.regression(predict_y, optimizer='adagrad', learning_rate=args.learning_rate,
 			loss='categorical_crossentropy')
 	
