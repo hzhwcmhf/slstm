@@ -16,11 +16,11 @@ args.word_vector = 'wordvector/glove.refine.txt'
 args.dim_w = 300
 
 args.dim_r = 250
-args.dim_rp = 50
+args.dim_rp = 0
 args.choose_num = 1
 
 args.dim_h = 250
-args.dim_hp = 50
+args.dim_hp = 0
 args.policy_dim = [64]
 
 args.dim_c = [64, 5]
