@@ -17,7 +17,7 @@ args.dim_w = 300
 
 args.dim_r = 250
 args.dim_rp = 50
-args.choose_num = 3
+args.choose_num = 1
 
 args.dim_h = 250
 args.dim_hp = 50
