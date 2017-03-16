@@ -77,7 +77,7 @@ def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 				action = policy(tf.concat([h_pre_s, h_p_pre], axis = 2), 
 								tf.concat([x_s, x_p], axis = 2), scope = scope)
 			else:
-				action = policy(h_pre_s, x_s, axis = 2), scope = scope)
+				action = policy(h_pre_s, x_s, scope = scope)
 			
 			action_continous_seq.append(action)
 			
