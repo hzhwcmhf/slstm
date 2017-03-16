@@ -15,6 +15,7 @@ from ClassifyLayer import ClassifyLayer
 
 def run(args):
 	config = tf.ConfigProto()
+	config.allow_soft_placement = True
 	config.gpu_options.allow_growth = True
 	tf.add_to_collection('graph_config', config)
 
@@ -49,7 +50,7 @@ def run(args):
 	
 	phrase = PhraseLayer(embedding, input_dim = args.dim_w, output_dim = (args.dim_r, args.dim_rp), output_length = args.choose_num, activation = 'prelu', dropout_keepprob = args.keep_drop, batchNorm = True)
 	
-	policy = separate_policy(args.policy_dim, activation='prelu',keepdrop = args.keep_drop, reuse = True)
+	policy = separate_policy(args.policy_dim, activation='prelu',keepdrop = args.keep_drop)
 	
 	hidden, action = SlstmLayer(phrase, seq_length, input_dim = (args.dim_r, args.dim_rp), output_dim = (args.dim_h, args.dim_hp), policy = policy, dropout_keepprob = args.keep_drop, pooling = True, update = "straight")
 	
@@ -57,7 +58,10 @@ def run(args):
 	
 	net = tflearn.regression(predict_y, optimizer='adam', learning_rate=args.learning_rate,
 			loss='categorical_crossentropy')
-						 
+	
+	for i in tf.trainable_variables():
+		print i
+	
 	# Training
 	model = tflearn.DNN(net, tensorboard_verbose=3)
 	model.fit({"input":trainX, "input_len":trainLength}, trainY, validation_set=({"input":devX, "input_len":devLength}, devY), show_metric=True,

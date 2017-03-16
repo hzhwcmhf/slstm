@@ -36,14 +36,14 @@ def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 		sen_length = incoming[0].get_shape()[1].value
 		choose_length = incoming[0].get_shape()[2].value
 		
-		cell = BasicLSTMCell(output_dim[0], reuse = False)
+		cell = BasicLSTMCell(output_dim[0])
 		def call_cell(inputs, status):
 			with tf.variable_scope("cell") as scope:
 				ans = cell(inputs, status, scope = scope)[1]
 				cell.reuse = True
 				return ans
 				
-		cell_p = BasicLSTMCell(output_dim[1], reuse = False)
+		cell_p = BasicLSTMCell(output_dim[1])
 		def call_cell_p(inputs, status):
 			with tf.variable_scope("cell_p") as scope:
 				ans = cell_p(inputs, status, scope = scope)[1]
@@ -131,15 +131,14 @@ def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 	return output_h, output_action
 	
 class separate_policy():
-	def __init__(self, dim, activation='prelu', keepdrop = 0.8, reuse = False):
+	def __init__(self, dim, activation='prelu', keepdrop = 0.8, reuse = None):
 		self.dim = dim
 		self.activation = activation
-		self.second_reuse = reuse
-		self.reuse = False
+		self.reuse = reuse
 		self.keepdrop = keepdrop
 		
 	def __call__(self, h, r, scope = None, name = 'separatePolicy'):
-		with tf.variable_scope(scope, default_name=name, values=[h, r]) as scope:
+		with tf.variable_scope(scope, default_name=name, values=[h, r], reuse = self.reuse) as scope:
 			name = scope.name
 			
 			incoming = tf.concat([h, r], axis = 2)
@@ -152,13 +151,13 @@ class separate_policy():
 			
 			for d in self.dim:
 				with tf.variable_scope("W" + str(d)) as scope:
-					inference = tflearn.fully_connected(inference, d, activation = self.activation, reuse = self.reuse, scope = scope)
+					inference = tflearn.fully_connected(inference, d, activation = self.activation)
 					inference = tflearn.dropout(inference, self.keepdrop)
 			with tf.variable_scope("W1") as scope:
-				inference = tflearn.fully_connected(inference, 1, reuse = self.reuse, scope = scope)
+				inference = tflearn.fully_connected(inference, 1)
 			
 			inference = tf.reshape(inference, [batch_size, choose_num])
 			inference = tf.nn.softmax(inference)
 		
-		self.reuse = self.second_reuse
+		self.reuse = True
 		return inference

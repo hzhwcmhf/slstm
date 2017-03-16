@@ -9,9 +9,7 @@ def ClassifyLayer(incoming, dim, activation = 'prelu', keepdrop = 0.8, scope = N
 	'''
 	incomming:
 		[batch_size, feature]
-		[batch_size, feature]
 	output:
-		[batch_size, dim[-1]]
 		[batch_size, dim[-1]]
 	'''
 	
@@ -26,3 +24,4 @@ def ClassifyLayer(incoming, dim, activation = 'prelu', keepdrop = 0.8, scope = N
 	tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, inference)
 	
 	return inference
+	

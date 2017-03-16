@@ -69,9 +69,9 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 			batch_size = tf.shape(incoming)[0]
 			sent_length = incoming.shape[1].value
 			
-			G1 = tf.zeros([batch_size * sent_length, output_dim])
-			G2 = tf.zeros([batch_size * sent_length, output_dim])
-			G3 = tf.zeros([batch_size * sent_length, output_dim])
+			G1 = tf.zeros([batch_size, sent_length, output_dim])
+			G2 = tf.zeros([batch_size, sent_length, output_dim])
+			G3 = tf.zeros([batch_size, sent_length, output_dim])
 			r = []
 			
 			for i in range(output_length):
@@ -81,19 +81,20 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				else:
 					now = tf.concat([tf.zeros([batch_size, i, input_dim]), incoming[:,0:-i, :]], axis = 1)
 				
-				now = tf.reshape(incoming, [batch_size * sent_length, input_dim])
+				F2 = tf.einsum('aij,jk->aik', now, Q) * G1
+				F3 = tf.einsum('aij,jk->aik', now, R) * G2
 				
-				F1 = tf.matmul(now, P) if i == 0 else tf.zeros([batch_size * sent_length, output_dim])
-				F2 = tf.matmul(now, Q) * G1
-				F3 = tf.matmul(now, R) * G2
-				
-				G1 = G1 * alpha + F1
+				if i == 0:
+					F1 = tf.einsum('aij,jk->aik', now, P)
+					G1 = G1 * alpha + F1
+				else:
+					G1 = G1 * alpha
 				G2 = G2 * alpha + F2
 				G3 = G3 * alpha + F3
 				
 				r.append(tf.matmul(G1+G2+G3, O))
 				
-			return tf.reshape(tf.stack(r, axis = 1), [batch_size, sent_length, output_length, output_dim])
+			return tf.stack(r, axis = 1)
 		
 		out1 = calc(incoming, P, Q, R, O, output_dim[0]) + b
 		out2 = calc(tf.stop_gradient(incoming), P_p, Q_p, R_p, O_p, output_dim[1]) + b_p
