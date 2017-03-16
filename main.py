@@ -37,7 +37,7 @@ def run(args):
 	logging.info('----------input data ok------------')
 	
 	input = tflearn.input_data([None, args.sentence_length], name="input")
-	seq_length = tflearn.input_data([None], name="input_len")
+	seq_length = tflearn.input_data([None], name="input_len", dtype=tf.int32)
 	
 	wordLoader = WordLoader()
 	wordvec = wordLoader.genWordVec(args.word_vector, dm.words, args.dim_w)
