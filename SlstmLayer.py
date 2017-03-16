@@ -53,11 +53,11 @@ def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 		x_seq = tf.unstack(incoming[0], axis = 1)
 		x_p_seq = tf.unstack(incoming[1], axis = 1)
 		
-		h_seq = [tf.zeros([batch_size, output_dim[0]]) for i in range(choose_length)]
-		c_seq = [tf.zeros([batch_size, output_dim[0]]) for i in range(choose_length)]
+		h_seq = [tf.zeros([batch_size, output_dim[0]])] * choose_length
+		c_seq = [tf.zeros([batch_size, output_dim[0]])] * choose_length
 		
-		h_p_seq = [tf.zeros([batch_size, output_dim[1]]) for i in range(choose_length)]
-		c_p_seq = [tf.zeros([batch_size, output_dim[1]]) for i in range(choose_length)]
+		h_p_seq = [tf.zeros([batch_size, output_dim[1]])] * choose_length
+		c_p_seq = [tf.zeros([batch_size, output_dim[1]])] * choose_length
 		
 		action_continous_seq = []
 		action_seq = []
