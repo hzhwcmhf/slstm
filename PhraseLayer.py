@@ -97,23 +97,26 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 			return tf.stack(r, axis = 1)
 		
 		out1 = calc(incoming, P, Q, R, O, output_dim[0]) + b
-		out2 = calc(tf.stop_gradient(incoming), P_p, Q_p, R_p, O_p, output_dim[1]) + b_p
-		
 		out1 = activation(out1, name="activation")
-		out2 = activation(out2, name="activation_p")
-		
 		tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, out1)
-		tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, out2)
-		
 		if batchNorm:
 			out1 = tflearn.batch_normalization(out1, name="batchNormOut1")
-			out2 = tflearn.batch_normalization(out2, name="batchNormOut2")
-		
 		out1 = tflearn.dropout(out1, dropout_keepprob, name="dropOut1")
-		out2 = tflearn.dropout(out2, dropout_keepprob, name="dropOut2")
+		
+		if output_dim[1] == 0:
+			out2 = None
+		else:
+			out2 = calc(tf.stop_gradient(incoming), P_p, Q_p, R_p, O_p, output_dim[1]) + b_p
+			out2 = activation(out2, name="activation_p")
+			tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, out2)
+			if batchNorm:
+				out1 = tflearn.batch_normalization(out1, name="batchNormOut1")
+			out2 = tflearn.batch_normalization(out2, name="batchNormOut2")
+			out2 = tflearn.dropout(out2, dropout_keepprob, name="dropOut2")
 	
 	tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, out1)
-	tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, out2)
+	if output_dim[1] != 0:
+		tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, out2)
 		
 	return out1, out2
 	

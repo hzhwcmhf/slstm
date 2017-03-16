@@ -51,27 +51,33 @@ def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 				return ans
 		
 		x_seq = tf.unstack(incoming[0], axis = 1)
-		x_p_seq = tf.unstack(incoming[1], axis = 1)
-		
 		h_seq = [tf.zeros([batch_size, output_dim[0]])] * choose_length
 		c_seq = [tf.zeros([batch_size, output_dim[0]])] * choose_length
 		
-		h_p_seq = [tf.zeros([batch_size, output_dim[1]])] * choose_length
-		c_p_seq = [tf.zeros([batch_size, output_dim[1]])] * choose_length
-		
+		if incoming[1]:
+			x_p_seq = tf.unstack(incoming[1], axis = 1)
+			h_p_seq = [tf.zeros([batch_size, output_dim[1]])] * choose_length
+			c_p_seq = [tf.zeros([batch_size, output_dim[1]])] * choose_length
+		else:
+			x_p_seq = x_seq
+			h_p_seq = h_seq
+			c_p_seq = c_seq
+			
 		action_continous_seq = []
 		action_seq = []
 		
 		for time, (x, x_p) in enumerate(zip(x_seq, x_p_seq)):
+		
 			h_pre = tf.stack(h_seq[:-choose_length-1:-1], axis = 1)
 			h_pre_s = tf.stop_gradient(h_pre)
-			
-			h_p_pre = tf.stack(h_p_seq[:-choose_length-1:-1], axis = 1)
-			
 			x_s = tf.stop_gradient(x)
 			
-			action = policy(tf.concat([h_pre_s, h_p_pre], axis = 2), 
-							tf.concat([x_s, x_p], axis = 2), scope = scope)
+			if incoming[1]:
+				h_p_pre = tf.stack(h_p_seq[:-choose_length-1:-1], axis = 1)
+				action = policy(tf.concat([h_pre_s, h_p_pre], axis = 2), 
+								tf.concat([x_s, x_p], axis = 2), scope = scope)
+			else:
+				action = policy(h_pre_s, x_s, axis = 2), scope = scope)
 			
 			action_continous_seq.append(action)
 			
@@ -84,10 +90,12 @@ def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 			
 			h_pre = h_seq[:-choose_length-1:-1]
 			c_pre = c_seq[:-choose_length-1:-1]
+			x_seq = tf.unstack(x, axis = 1)
+			
 			h_p_pre = h_p_seq[:-choose_length-1:-1]
 			c_p_pre = c_p_seq[:-choose_length-1:-1]
-			x_seq = tf.unstack(x, axis = 1)
 			x_p_seq = tf.unstack(x_p, axis = 1)
+			
 			all_h = []
 			all_c = []
 			all_h_p = []
@@ -109,15 +117,16 @@ def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 			now_h = tf.where(tf.less(time, seq_length), now_h, h_seq[-1])
 			now_c = tf.reduce_sum(tf.stack(all_c, axis = 1) * action, axis = 1)
 			now_c = tf.where(tf.less(time, seq_length), now_c, c_seq[-1])
-			now_h_p = tf.reduce_sum(tf.stack(all_h_p, axis = 1) * action, axis = 1)
-			now_h_p = tf.where(tf.less(time, seq_length), now_h_p, h_p_seq[-1])
-			now_c_p = tf.reduce_sum(tf.stack(all_c_p, axis = 1) * action, axis = 1)
-			now_c_p = tf.where(tf.less(time, seq_length), now_c_p, c_p_seq[-1])
-			
 			h_seq.append(now_h)
 			c_seq.append(now_c)
-			h_p_seq.append(now_h_p)
-			c_p_seq.append(now_c_p)
+			
+			if incoming[1]:
+				now_h_p = tf.reduce_sum(tf.stack(all_h_p, axis = 1) * action, axis = 1)
+				now_h_p = tf.where(tf.less(time, seq_length), now_h_p, h_p_seq[-1])
+				now_c_p = tf.reduce_sum(tf.stack(all_c_p, axis = 1) * action, axis = 1)
+				now_c_p = tf.where(tf.less(time, seq_length), now_c_p, c_p_seq[-1])
+				h_p_seq.append(now_h_p)
+				c_p_seq.append(now_c_p)
 			
 		if pooling:
 			output_h = tf.reduce_max(tf.stack(h_seq, axis = 2), axis = 2)
