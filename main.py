@@ -55,7 +55,13 @@ def run(args):
 			loss='categorical_crossentropy')
 						 
 	# Training
-	model = tflearn.DNN(net, tensorboard_verbose=3)
+	config = tf.ConfigProto()
+	config.gpu_options.allow_growth = True
+	sess = tf.Session(config=config)
+	sess.run(tf.global_variables_initializer())
+
+	
+	model = tflearn.DNN(net, tensorboard_verbose=3, session=sess)
 	model.fit({"input":trainX, "input_len":trainLength}, trainY, validation_set=({"input":devX, "input_len":devLength}, devY), show_metric=True,
 		  batch_size=32)
 		  
