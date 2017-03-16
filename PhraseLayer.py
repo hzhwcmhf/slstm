@@ -92,7 +92,7 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				G2 = G2 * alpha + F2
 				G3 = G3 * alpha + F3
 				
-				r.append(tf.matmul(G1+G2+G3, O))
+				r.append(tf.einsum('aij,jk->aik',G1+G2+G3, O))
 				
 			return tf.stack(r, axis = 1)
 		
