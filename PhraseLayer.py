@@ -96,7 +96,10 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				
 			return tf.stack(r, axis = 1)
 		
-		out1 = calc(incoming, P, Q, R, O, output_dim[0]) + b
+		batch_size = tf.shape(incoming)[0]
+		sent_length = incoming.shape[1].value
+		out1 = tf.reshape(incoming, [batch_size, sent_length, 1, -1])
+		#out1 = calc(incoming, P, Q, R, O, output_dim[0]) + b
 		#out1 = activation(out1, name="activation")
 		tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, out1)
 		if batchNorm:
