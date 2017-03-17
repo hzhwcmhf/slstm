@@ -54,7 +54,8 @@ def run(args):
 	
 	hidden, action = SlstmLayer(phrase, seq_length, input_dim = (args.dim_r, args.dim_rp), output_dim = (args.dim_h, args.dim_hp), policy = policy, dropout_keepprob = args.keep_drop, pooling = False, update = "straight")
 	
-	hidden = tflearn.lstm(embedding, args.dim_h, dynamic=True)
+	
+	hidden = tflearn.lstm(phrase[0][:,:,0,:], args.dim_h, dynamic=True)
 	
 	predict_y = ClassifyLayer(hidden, dim = args.dim_c, keepdrop = args.keep_drop, activation='prelu')
 	
