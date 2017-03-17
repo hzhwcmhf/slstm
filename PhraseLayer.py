@@ -50,7 +50,7 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 		tf.add_to_collection(tf.GraphKeys.LAYER_VARIABLES + '/' + name, O_p)
 		
 		b = va.variable('b', shape=[1, 1, 1, output_dim[0]],
-				initializer=np.ones.get('ones')())
+				initializer=tf.ones_initializer())
 		
 		b_p = va.variable('b_p', shape=[1, 1, 1, output_dim[1]],
 				initializer=tf.ones_initializer())
