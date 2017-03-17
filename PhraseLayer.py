@@ -50,10 +50,10 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 		tf.add_to_collection(tf.GraphKeys.LAYER_VARIABLES + '/' + name, O_p)
 		
 		b = va.variable('b', shape=[1, 1, 1, output_dim[0]],
-				initializer=initializations.get('zeros')())
+				initializer=initializations.get('ones')())
 		
 		b_p = va.variable('b_p', shape=[1, 1, 1, output_dim[1]],
-				initializer=initializations.get('zeros')())
+				initializer=initializations.get('ones')())
 				
 		
 		if isinstance(activation, str):
@@ -107,8 +107,8 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 		out1 = activation(out1, name="activation")
 		tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, out1)
 		if batchNorm:
-			#pass
-			out1 = tflearn.batch_normalization(out1, name="batchNormOut1")
+			pass
+			#out1 = tflearn.batch_normalization(out1, name="batchNormOut1")
 		out1 = tflearn.dropout(out1, dropout_keepprob, name="dropOut1")
 		
 		if output_dim[1] == 0:
@@ -118,8 +118,7 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 			out2 = activation(out2, name="activation_p")
 			tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, out2)
 			if batchNorm:
-				out1 = tflearn.batch_normalization(out1, name="batchNormOut1")
-			out2 = tflearn.batch_normalization(out2, name="batchNormOut2")
+				out2 = tflearn.batch_normalization(out2, name="batchNormOut2")		
 			out2 = tflearn.dropout(out2, dropout_keepprob, name="dropOut2")
 	
 	tf.add_to_collection(tf.GraphKeys.LAYER_TENSOR + '/' + name, out1)
