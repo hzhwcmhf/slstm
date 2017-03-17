@@ -97,7 +97,8 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				F1 = tf.einsum('aij,jk->aik', incoming, P)
 				r.append(tf.einsum('aij,jk->aik',F1, O))
 				
-			return tf.stack(r, axis = 2)
+			#return tf.stack(r, axis = 2)
+			return tf.reshape(r[0], [batch_size, sent_length, 1, output_dim])
 		
 		#batch_size = tf.shape(incoming)[0]
 		#sent_length = incoming.shape[1].value
