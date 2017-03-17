@@ -98,7 +98,7 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 		
 		batch_size = tf.shape(incoming)[0]
 		sent_length = incoming.shape[1].value
-		out1 = tf.reshape(tf.matmul(incoming, O), [batch_size, sent_length, 1, output_dim[0]])
+		out1 = tf.reshape(tf.einsum('aij,jk->aik', P), [batch_size, sent_length, 1, output_dim[0]])
 		#out1 = calc(incoming, P, Q, R, O, output_dim[0]) + b
 		#out1 = activation(out1, name="activation")
 		tf.add_to_collection(tf.GraphKeys.ACTIVATIONS, out1)
