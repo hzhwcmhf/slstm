@@ -76,7 +76,7 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 			
 			for i in range(output_length):
 				
-				if i == 0:
+				'''if i == 0:
 					now = incoming
 				else:
 					now = tf.concat([tf.zeros([batch_size, i, input_dim]), incoming[:,0:-i, :]], axis = 1)
@@ -92,7 +92,10 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 				G2 = G2 * alpha + F2
 				G3 = G3 * alpha + F3
 				
-				r.append(tf.einsum('aij,jk->aik',G1+G2+G3, O))
+				r.append(tf.einsum('aij,jk->aik',G1+G2+G3, O))'''
+				
+				F1 = tf.einsum('aij,jk->aik', incoming, P)
+				r.append(tf.einsum('aij,jk->aik',F1, O))
 				
 			return tf.stack(r, axis = 2)
 		
