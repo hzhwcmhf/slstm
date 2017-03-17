@@ -46,14 +46,14 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 		tf.add_to_collection(tf.GraphKeys.LAYER_VARIABLES + '/' + name, O)
 		
 		O_p = va.variable('O_p', shape=[output_dim[1], output_dim[1]],
-				initializer=initializations.get('truncated_normal')())
+				initializer=tf.ones_initializer())
 		tf.add_to_collection(tf.GraphKeys.LAYER_VARIABLES + '/' + name, O_p)
 		
 		b = va.variable('b', shape=[1, 1, 1, output_dim[0]],
-				initializer=initializations.get('ones')())
+				initializer=np.ones.get('ones')())
 		
 		b_p = va.variable('b_p', shape=[1, 1, 1, output_dim[1]],
-				initializer=initializations.get('ones')())
+				initializer=tf.ones_initializer())
 				
 		
 		if isinstance(activation, str):
