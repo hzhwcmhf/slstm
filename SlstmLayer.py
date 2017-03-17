@@ -113,9 +113,11 @@ def SlstmLayer(incoming, seq_length, input_dim, output_dim, policy,
 					all_h_p.append(state_p[1])
 			
 			action = tf.reshape(action, [batch_size, choose_length, 1])
-			now_h = tf.reduce_sum(tf.stack(all_h, axis = 1) * action, axis = 1)
+			now_h = all_h[0]
+			now_c = all_c[0]
+			#now_h = tf.reduce_sum(tf.stack(all_h, axis = 1) * action, axis = 1)
 			# now_h = tf.where(tf.less(time, seq_length), now_h, h_seq[-1])
-			now_c = tf.reduce_sum(tf.stack(all_c, axis = 1) * action, axis = 1)
+			#now_c = tf.reduce_sum(tf.stack(all_c, axis = 1) * action, axis = 1)
 			# now_c = tf.where(tf.less(time, seq_length), now_c, c_seq[-1])
 			h_seq.append(now_h)
 			c_seq.append(now_c)
