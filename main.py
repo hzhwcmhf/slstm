@@ -63,7 +63,7 @@ def run(args):
 	
 	#predict_y = tf.Print(predict_y, [predict_y], summarize = 10)
 	
-	net = tflearn.regression(predict_y, optimizer='adadelta', learning_rate=args.learning_rate,
+	net = tflearn.regression(predict_y, optimizer='adam', learning_rate=args.learning_rate,
 			loss='categorical_crossentropy')
 	
 	for i in tf.trainable_variables():
