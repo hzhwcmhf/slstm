@@ -59,7 +59,7 @@ def run(args):
 	
 	hidden = tflearn.lstm(embedding, args.dim_h)
 	
-	predict_y = ClassifyLayer(hidden, dim = args.dim_c, keepdrop = args.keep_drop, activation='prelu')
+	predict_y = ClassifyLayer(hidden, dim = args.dim_c, keepdrop = args.keep_drop, activation='relu')
 	
 	#predict_y = tf.Print(predict_y, [predict_y], summarize = 10)
 	
