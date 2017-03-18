@@ -57,7 +57,7 @@ def run(args):
 	
 	#hidden = tflearn.lstm(phrase[0][:,:,0,:], args.dim_h)
 	
-	hidden = tflearn.lstm(embedding, args.dim_h)
+	hidden = tflearn.lstm(embedding, args.dim_h, dynamic=True)
 	
 	predict_y = ClassifyLayer(hidden, dim = args.dim_c, keepdrop = args.keep_drop, activation='sigmoid')
 	
