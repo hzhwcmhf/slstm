@@ -48,11 +48,11 @@ def run(args):
 	wordvec = wordLoader.genWordVec(args.word_vector, dm.words, args.dim_w)
 	embedding = tflearn.embedding(input, input_dim=len(dm.words) + 1, output_dim = args.dim_w, weights_init = tf.constant_initializer(wordvec))
 	
-	phrase = PhraseLayer(embedding, input_dim = args.dim_w, output_dim = (args.dim_r, args.dim_rp), output_length = args.choose_num, activation = 'prelu', dropout_keepprob = args.keep_drop, batchNorm = True)
+	#phrase = PhraseLayer(embedding, input_dim = args.dim_w, output_dim = (args.dim_r, args.dim_rp), output_length = args.choose_num, activation = 'prelu', dropout_keepprob = args.keep_drop, batchNorm = True)
 	
-	policy = separate_policy(args.policy_dim, activation='prelu',keepdrop = args.keep_drop)
+	#policy = separate_policy(args.policy_dim, activation='prelu',keepdrop = args.keep_drop)
 	
-	hidden, action = SlstmLayer(phrase, seq_length, input_dim = (args.dim_r, args.dim_rp), output_dim = (args.dim_h, args.dim_hp), policy = policy, dropout_keepprob = args.keep_drop, pooling = False, update = "straight")
+	#hidden, action = SlstmLayer(phrase, seq_length, input_dim = (args.dim_r, args.dim_rp), output_dim = (args.dim_h, args.dim_hp), policy = policy, dropout_keepprob = args.keep_drop, pooling = False, update = "straight")
 	
 	
 	#hidden = tflearn.lstm(phrase[0][:,:,0,:], args.dim_h)
