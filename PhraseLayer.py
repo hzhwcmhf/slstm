@@ -109,7 +109,7 @@ def PhraseLayer(incoming, input_dim, output_dim, output_length, activation='line
 		if batchNorm:
 			pass
 			#out1 = tflearn.batch_normalization(out1, name="batchNormOut1")
-		out1 = tflearn.dropout(out1, dropout_keepprob, name="dropOut1")
+		#out1 = tflearn.dropout(out1, dropout_keepprob, name="dropOut1")
 		
 		if output_dim[1] == 0:
 			out2 = None
