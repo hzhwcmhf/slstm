@@ -17,7 +17,7 @@ def ClassifyLayer(incoming, dim, activation = 'prelu', keepdrop = 0.8, scope = N
 		inference = incoming
 		for d in dim[:-1]:
 			inference = tflearn.fully_connected(inference, d, activation = activation, name="W"+str(d))
-			inference = tflearn.dropout(inference, keepdrop)
+			# inference = tflearn.dropout(inference, keepdrop)
 		
 		inference = tflearn.fully_connected(inference, dim[-1], activation = 'softmax', name="Wend")
 	

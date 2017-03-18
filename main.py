@@ -48,7 +48,7 @@ def run(args):
 	wordvec = wordLoader.genWordVec(args.word_vector, dm.words, args.dim_w)
 	embedding = tflearn.embedding(input, input_dim=len(dm.words) + 1, output_dim = args.dim_w, weights_init = tf.constant_initializer(wordvec))
 	
-	phrase = PhraseLayer(embedding, input_dim = args.dim_w, output_dim = (args.dim_r, args.dim_rp), output_length = args.choose_num, activation = 'prelu', dropout_keepprob = args.keep_drop, batchNorm = True)
+	phrase = PhraseLayer(embedding, input_dim = args.dim_w, output_dim = (args.dim_r, args.dim_rp), output_length = args.choose_num, activation = 'relu', dropout_keepprob = args.keep_drop, batchNorm = True)
 	
 	policy = separate_policy(args.policy_dim, activation='prelu',keepdrop = args.keep_drop)
 	
@@ -61,7 +61,7 @@ def run(args):
 	
 	#predict_y = tf.Print(predict_y, [predict_y], summarize = 10)
 	
-	net = tflearn.regression(predict_y, optimizer='adagrad', learning_rate=args.learning_rate,
+	net = tflearn.regression(predict_y, optimizer='adadelta', learning_rate=args.learning_rate,
 			loss='categorical_crossentropy')
 	
 	for i in tf.trainable_variables():
@@ -69,7 +69,7 @@ def run(args):
 	
 	# Training
 	model = tflearn.DNN(net, tensorboard_verbose=3)
-	model.fit({"input":trainX, "input_len":trainLength}, trainY, validation_set=({"input":devX, "input_len":devLength}, devY), show_metric=True,
+	model.fit({"input":trainX, "input_len":trainLength}, trainY, n_epoch=30, validation_set=({"input":devX, "input_len":devLength}, devY), show_metric=True,
 		  batch_size=32)
 		  
 	# regularize 
